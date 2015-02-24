@@ -38,3 +38,10 @@ node_modules
 
 ### PhPStorm ###
 .idea/
+
+### config ###
+.client/env/config.js
+
+### .flooignore ***
+.flooignore
+.floo
