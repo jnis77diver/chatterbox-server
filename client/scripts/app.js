@@ -1,7 +1,8 @@
+var username = "";
 var app = {
-  rooms: {},
   server: "http://127.0.0.1:3000/classes/messages",
   friends: {},
+  rooms: {},
   init: function(){
     $('body').append('<div class="rooms" id="roomSelect"></div>');
     $('body').append('<div class="messages" id="chats"></div>');
@@ -10,19 +11,20 @@ var app = {
   send: function(message){
     console.log('message is ', message);
     var context = this;
-    var message = {
-      'username': userObj.username,
+    var msg = {
+      'username': username,
       'text': message,
-      'roomname': currentRoom,
+      'roomname': 'lobby',
+      'updatedAt': new Date().toISOString()
     };
     $.ajax({
       url: context.server,
       type: 'POST',
-      data: JSON.stringify(message),
+      data: JSON.stringify(msg),
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
-        //this.fetch();
+        app.fetch();
       },
       error: function (data) {
         console.error('chatterbox: Failed to send message');
@@ -112,10 +114,14 @@ var app = {
 
 
 $(document).ready(function() {
+  username = prompt('Enter username');
+  console.log("prompt test");
   app.init();
-  $('#submit').on('click', function() {
+  $('#submit').on('click', function(e) {
+    e.preventDefault();
     var msg = $('#text').val();
     app.send(msg);
+    $('#text').val("");
   });
 });
 
